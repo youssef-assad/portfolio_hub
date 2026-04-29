@@ -4,8 +4,9 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, ExternalLink, MessageSquare } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
+import { ChatPanel } from "@/components/chat/chat-panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { projects, type Project } from "@/lib/projects";
@@ -19,6 +20,7 @@ export function Projects() {
   const trackRef = useRef<HTMLDivElement | null>(null);
   const mobileRef = useRef<HTMLDivElement | null>(null);
   const reduced = useReducedMotion();
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
 
   useGSAP(
     () => {
@@ -39,9 +41,9 @@ export function Projects() {
           scrollTrigger: {
             trigger: pin,
             start: "top top",
-            end: () => `+=${distance()}`,
+            end: () => `+=${distance() * 0.6}`,
             pin: true,
-            scrub: 1,
+            scrub: 0.8,
             invalidateOnRefresh: true,
           },
         });
@@ -105,7 +107,11 @@ export function Projects() {
         <div ref={trackRef} className="flex h-full will-change-transform">
           <IntroPanel />
           {projects.map((project) => (
-            <ProjectPanel key={project.id} project={project} />
+            <ProjectPanel
+              key={project.id}
+              project={project}
+              onTalk={setActiveProject}
+            />
           ))}
           <OutroPanel />
         </div>
@@ -131,7 +137,11 @@ export function Projects() {
         </header>
 
         {projects.map((project) => (
-          <MobileCard key={project.id} project={project} />
+          <MobileCard
+            key={project.id}
+            project={project}
+            onTalk={setActiveProject}
+          />
         ))}
 
         <div data-card className="max-w-2xl">
@@ -164,6 +174,12 @@ export function Projects() {
           </a>
         </div>
       </div>
+
+      <ChatPanel
+        project={activeProject}
+        open={activeProject !== null}
+        onClose={() => setActiveProject(null)}
+      />
     </section>
   );
 }
@@ -203,7 +219,13 @@ function IntroPanel() {
   );
 }
 
-function ProjectPanel({ project }: { project: Project }) {
+function ProjectPanel({
+  project,
+  onTalk,
+}: {
+  project: Project;
+  onTalk: (project: Project) => void;
+}) {
   return (
     <article
       data-panel
@@ -269,15 +291,10 @@ function ProjectPanel({ project }: { project: Project }) {
             </Button>
             <Button
               variant="outline"
-              disabled
-              aria-disabled
-              title="Coming soon"
+              onClick={() => onTalk(project)}
             >
               <MessageSquare className="mr-1 h-4 w-4" />
               Talk to this project
-              <span className="ml-2 text-[10px] uppercase tracking-wider text-foreground/50">
-                Soon
-              </span>
             </Button>
           </div>
         </div>
@@ -337,7 +354,13 @@ function OutroPanel() {
   );
 }
 
-function MobileCard({ project }: { project: Project }) {
+function MobileCard({
+  project,
+  onTalk,
+}: {
+  project: Project;
+  onTalk: (project: Project) => void;
+}) {
   return (
     <article data-card className="flex flex-col gap-6 border border-white/10 p-8">
       <div className="flex items-baseline justify-between">
@@ -389,15 +412,10 @@ function MobileCard({ project }: { project: Project }) {
         <Button
           variant="outline"
           size="sm"
-          disabled
-          aria-disabled
-          title="Coming soon"
+          onClick={() => onTalk(project)}
         >
           <MessageSquare className="mr-1 h-3.5 w-3.5" />
           Talk to this project
-          <span className="ml-2 text-[10px] uppercase tracking-wider text-foreground/50">
-            Soon
-          </span>
         </Button>
       </div>
     </article>

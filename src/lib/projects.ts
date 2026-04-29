@@ -8,6 +8,7 @@ export interface Project {
   repoUrl?: string;
   accentColor: string;
   year: number;
+  suggestedQuestions: string[];
 }
 
 export const projects: Project[] = [
@@ -31,6 +32,12 @@ export const projects: Project[] = [
     liveUrl: "https://trendpoll.v0.primesay.com",
     accentColor: "#2563eb",
     year: 2026,
+    suggestedQuestions: [
+      "Why Mistral 7B and not GPT-4?",
+      "How does the anonymous voting work?",
+      "What was the hardest bug you fixed?",
+      "What are TrendPoll's biggest limitations?",
+    ],
   },
   {
     id: "primesay-ai",
@@ -42,5 +49,11 @@ export const projects: Project[] = [
     liveUrl: "https://voice-video-generator.v0.primesay.com/",
     accentColor: "#f97316",
     year: 2026,
+    suggestedQuestions: [
+      "Why bundle four TTS engines?",
+      "How does the Chatterbox GPU swap work?",
+      "Why is audience verification disabled?",
+      "What are the known limitations?",
+    ],
   },
 ];
