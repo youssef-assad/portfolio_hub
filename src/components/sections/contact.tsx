@@ -32,18 +32,18 @@ const HEADING = "Let's build something.";
 
 const LINKS: { href: string; label: string; Icon: IconType }[] = [
   {
-    href: "mailto:hello@youssef.dev",
-    label: "hello@youssef.dev",
+    href: "mailto:youssefassad158@gmail.com",
+    label: "youssefassad158@gmail.com",
     Icon: Mail,
   },
   {
-    href: "https://github.com/youssef",
-    label: "github.com/youssef",
+    href: "https://github.com/youssef-assad",
+    label: "github.com/youssef-assad",
     Icon: GithubIcon,
   },
   {
-    href: "https://www.linkedin.com/in/youssef",
-    label: "linkedin.com/in/youssef",
+    href: "https://www.linkedin.com/in/youssef-assad-a8204b289/",
+    label: "linkedin.com/in/youssef-assad-a8204b289/",
     Icon: LinkedinIcon,
   },
 ];

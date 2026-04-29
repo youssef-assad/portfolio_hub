@@ -9,6 +9,7 @@ export interface Project {
   accentColor: string;
   year: number;
   suggestedQuestions: string[];
+  image?: string;
 }
 
 export const projects: Project[] = [
@@ -38,6 +39,7 @@ export const projects: Project[] = [
       "What was the hardest bug you fixed?",
       "What are TrendPoll's biggest limitations?",
     ],
+    image: "/projects/trendpoll.png",
   },
   {
     id: "primesay-ai",
@@ -55,5 +57,6 @@ export const projects: Project[] = [
       "Why is audience verification disabled?",
       "What are the known limitations?",
     ],
+    image: "/projects/primesay-ai.png",
   },
 ];

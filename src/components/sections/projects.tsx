@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, ExternalLink, MessageSquare } from "lucide-react";
+import Image from "next/image";
 import { useRef, useState } from "react";
 
 import { ChatPanel } from "@/components/chat/chat-panel";
@@ -299,17 +300,22 @@ function ProjectPanel({
           </div>
         </div>
 
-        <div data-anim className="flex items-center will-change-transform">
-          <div
-            className="flex aspect-[4/5] w-full items-center justify-center border bg-white/[0.02]"
-            style={{
-              borderColor: `${project.accentColor}24`,
-            }}
-          >
-            <span className="text-[10px] uppercase tracking-[0.25em] text-foreground/30">
-              preview
-            </span>
-          </div>
+        <div
+          data-anim
+          className="flex items-center justify-center will-change-transform"
+        >
+          {project.image ? (
+            <ScreenshotFrame project={project} />
+          ) : (
+            <div
+              className="flex aspect-[4/5] w-full items-center justify-center border bg-white/[0.02]"
+              style={{ borderColor: `${project.accentColor}24` }}
+            >
+              <span className="text-[10px] uppercase tracking-[0.25em] text-foreground/30">
+                preview
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </article>
@@ -377,6 +383,11 @@ function MobileCard({
           {project.year}
         </span>
       </div>
+      {project.image && (
+        <div data-anim className="w-full will-change-transform">
+          <ScreenshotFrame project={project} compact />
+        </div>
+      )}
       <p
         data-anim
         className="text-base text-foreground/70 will-change-transform"
@@ -419,5 +430,42 @@ function MobileCard({
         </Button>
       </div>
     </article>
+  );
+}
+
+function ScreenshotFrame({
+  project,
+  compact = false,
+}: {
+  project: Project;
+  compact?: boolean;
+}) {
+  if (!project.image) return null;
+  return (
+    <div className="relative w-full max-w-2xl">
+      <div
+        aria-hidden="true"
+        className={`pointer-events-none absolute rounded-2xl blur-3xl ${
+          compact ? "-inset-6 opacity-40" : "-inset-8 opacity-60"
+        }`}
+        style={{
+          background: `radial-gradient(circle at center, ${project.accentColor}22 0%, transparent 70%)`,
+        }}
+      />
+      <div className="relative aspect-video w-full overflow-hidden rounded-sm border border-white/10 bg-white/[0.03] shadow-2xl shadow-black/50">
+        <Image
+          src={project.image}
+          alt={`${project.name} screenshot`}
+          fill
+          className="object-contain"
+          sizes={compact ? "100vw" : "(max-width: 1024px) 100vw, 672px"}
+          priority={project.id === "trendpoll" && !compact}
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"
+        />
+      </div>
+    </div>
   );
 }
